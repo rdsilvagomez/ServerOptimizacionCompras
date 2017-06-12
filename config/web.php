@@ -4,7 +4,10 @@ $params = require(__DIR__ . '/params.php');
 
 $config = [
     'id' => 'basic',
-    'controllerMap' => [
+        'controllerMap' => [
+        'usuario'=>[
+            'class'=> 'app\controllers\usuariosController',
+         ],
          'filtrousuario'=>[
             'class'=> 'app\controllers\FiltrosUsuarioController',
          ],

@@ -45,8 +45,8 @@ class loginController extends ActiveController
 
             $model = new LoginForm();
             $model->username= $obj['username'];
-            $model->password= $obj['password'];
-	 
+            $model->password= md5($obj['password']);
+	  /*echo (md5($obj['password']));  */
            
        
         if ( $model->login()) 
