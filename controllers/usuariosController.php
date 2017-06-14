@@ -36,7 +36,28 @@ class usuariosController extends ActiveController
         ]; 
 
         }
+public function actionIngresar(){
 
+      $rest = array ('message'=>'ok','success'=>true );
+      try{
+                $json = file_get_contents('php://input');
+                $obj  = json_decode($json, TRUE);
+                $usuarios =   new \app\models\Usuarios(); 
+                $usuarios->firstname   =  $obj['Nombres']; 
+                $usuarios->lastname    =  $obj['Apellidos'] ;
+                $usuarios->password    =  md5($obj['pwd']) ;
+                $usuarios->username =  $obj['Usuario'] ;
+                $usuarios->save();    
+        }
+        catch(\Exception $e)
+        {
+                $rest = array ('message'=>$e->getMessage(),'success'=>false);
+
+        }
+     
+       echo json_encode($rest); 
+     }
+ 
  
 public function actionList()    {
 
@@ -57,12 +78,7 @@ public function actionList()    {
    $_meta	= array('totalCount'=>$resultado[0]['cantidad']); 
    $rest    = array ('data'=> $recProveedor,'_meta' =>$_meta);  
    echo json_encode($rest); 
- /*  $dataProvider = new ActiveDataProvider([
-    'query' => $command->query(),
-                'pagination' => ['pageSize'   => 10,],
-        ]);*/
-/*
-    return $dataProvider;    */
+  
 
  
 }
@@ -70,17 +86,41 @@ public function actionList()    {
 public function actionActualizar()
 							   {
  
-   $json = file_get_contents('php://input');
-   $obj  = json_decode($json, TRUE);
-   $usuarios = usuarios::findOne( $obj['id'] );
-		   
-		   $usuarios->firstname   =  $obj['firstname']; 
-		   $usuarios->lastname    =  $obj['lastname'] ;
-		   $usuarios->password    =  md5($obj['password']) ;
-		   $usuarios->idProveedor =  $obj['idProveedor'] ;
+                    $rest = array ('message'=>'ok','success'=>true );
+                    try {
 
-   $usuarios->save();    
+                    $json = file_get_contents('php://input');
+                    $obj  = json_decode($json, TRUE);
+                    $usuarios = usuarios::findOne( $obj['id'] );
+            		    
+                    $filtros = \app\models\Usuarios::find()->where(['username' => $obj['username'] ])
+                                                          ->andWhere(['<>','id', $obj['id']])->all();
 
+                    if ($filtros== null)
+                    {
+
+                        $usuarios->firstname   =  $obj['firstname']; 
+                        $usuarios->lastname    =  $obj['lastname'] ;
+                        if ($usuarios->password !== $obj['password'])
+                        { $usuarios->password    =  md5($obj['password']) ;}
+                        $usuarios->idProveedor =  $obj['idProveedor'] ;
+                        $usuarios->save(); 
+
+                    }
+
+                    else {
+
+                        $rest = array ('message'=>'Usuario repetido','success'=>false);
+                    }
+               
+                        }
+                        catch(\Exception $e)
+                        {
+                          
+                          $rest = array ('message'=>$e->getMessage(),'success'=>false);
+                        }
+                  
+                                  echo json_encode($rest); 
 								}
 
 
