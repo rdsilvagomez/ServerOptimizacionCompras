@@ -17,6 +17,15 @@ use Yii;
  * @property string $SHORT_TEXT
  * @property string $MATERIAL
  * @property string $MATERIAL_EXTERNAL
+ * @property integer $HABILITADO
+ * @property string $FECHA
+ * @property string $PUR_GROUP
+ * @property string $PUR_MAT
+ * @property string $PLANT
+ * @property string $STORE_LOC
+ * @property string $UNIT
+ * @property string $UNITDES
+ * @property double $QUANTITY
  */
 class CarguePosicionesLibres extends \yii\db\ActiveRecord
 {
@@ -34,7 +43,10 @@ class CarguePosicionesLibres extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['NUMERO_SOLPED', 'PREQ_ITEM', 'DOC_TYPE', 'CREATED_BY', 'CH_ON', 'PREQ_NAME', 'SHORT_TEXT', 'MATERIAL', 'MATERIAL_EXTERNAL'], 'string'],
+            [['NUMERO_SOLPED', 'PREQ_ITEM', 'DOC_TYPE', 'CREATED_BY', 'CH_ON', 'PREQ_NAME', 'SHORT_TEXT', 'MATERIAL', 'MATERIAL_EXTERNAL', 'PUR_GROUP', 'PUR_MAT', 'PLANT', 'STORE_LOC', 'UNIT', 'UNITDES'], 'string'],
+            [['HABILITADO'], 'integer'],
+            [['FECHA'], 'safe'],
+            [['QUANTITY'], 'number'],
         ];
     }
 
@@ -54,6 +66,15 @@ class CarguePosicionesLibres extends \yii\db\ActiveRecord
             'SHORT_TEXT' => 'Short  Text',
             'MATERIAL' => 'Material',
             'MATERIAL_EXTERNAL' => 'Material  External',
+            'HABILITADO' => 'Habilitado',
+            'FECHA' => 'Fecha',
+            'PUR_GROUP' => 'Pur  Group',
+            'PUR_MAT' => 'Pur  Mat',
+            'PLANT' => 'Plant',
+            'STORE_LOC' => 'Store  Loc',
+            'UNIT' => 'Unit',
+            'UNITDES' => 'Unitdes',
+            'QUANTITY' => 'Quantity',
         ];
     }
 }
